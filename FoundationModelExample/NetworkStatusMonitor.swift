@@ -1,6 +1,6 @@
+internal import Combine
 import Foundation
 import Network
-internal import Combine
 
 class NetworkStatusMonitor: ObservableObject {
     enum Status: String {
@@ -9,11 +9,11 @@ class NetworkStatusMonitor: ObservableObject {
         case cellular = "Mobile"
         case unknown = "Unknown"
     }
-    
+
     @Published var status: Status = .unknown
     private var monitor: NWPathMonitor?
     private let queue = DispatchQueue(label: "NetworkStatusMonitor")
-    
+
     init() {
         monitor = NWPathMonitor()
         monitor?.pathUpdateHandler = { [weak self] path in
@@ -33,7 +33,7 @@ class NetworkStatusMonitor: ObservableObject {
         }
         monitor?.start(queue: queue)
     }
-    
+
     deinit {
         monitor?.cancel()
     }

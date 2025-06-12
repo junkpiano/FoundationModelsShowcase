@@ -1,7 +1,7 @@
-import FoundationModels
-import Foundation
-import SwiftUI
 internal import Combine
+import Foundation
+import FoundationModels
+import SwiftUI
 
 class AIViewModel: ObservableObject {
     @Published var answer: String = ""
@@ -17,7 +17,7 @@ class AIViewModel: ObservableObject {
                 print("LanguageModelSession is not available on this version.")
                 return
             }
-            
+
             let session = LanguageModelSession()
             do {
                 let response = try await session.respond(to: prompt)
@@ -31,11 +31,11 @@ class AIViewModel: ObservableObject {
         }
         isLoading = false
     }
-    
+
     private func checkModelAvailability() {
         if #available(macOS 26.0, *) {
             let model = SystemLanguageModel.default
-            
+
             switch model.availability {
             case .available:
                 // Show your intelligence UI.
@@ -51,11 +51,12 @@ class AIViewModel: ObservableObject {
                 print("LanguageModelSession model is not ready.")
             case .unavailable(let other):
                 // The model is unavailable for an unknown reason.
-                print("LanguageModelSession is unavailable for an unknown reason: \(other)")
+                print(
+                    "LanguageModelSession is unavailable for an unknown reason: \(other)"
+                )
             }
         } else {
             print("LanguageModelSession is not available on this version.")
         }
     }
 }
-

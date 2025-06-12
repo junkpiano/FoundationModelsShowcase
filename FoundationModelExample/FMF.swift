@@ -1,12 +1,12 @@
-import FoundationModels
 import Foundation
+import FoundationModels
 
 class FMF {
     var session: LanguageModelSession
     init(session: LanguageModelSession = LanguageModelSession()) {
         self.session = session
     }
-    
+
     /// Handle  Errors
     func handleErrors(prompt: String) async throws {
         // initalize without any history
@@ -17,11 +17,12 @@ class FMF {
             print(answer.content)
         } catch LanguageModelSession.GenerationError.exceededContextWindowSize {
             // New session, with some history from the previous session
-            
+
             session = newSession(previousSession: session)
-        } catch LanguageModelSession.GenerationError.unsupportedLanguageOrLocale {
+        } catch LanguageModelSession.GenerationError.unsupportedLanguageOrLocale
+        {
             // Unsupported language in prompt.
-            
+
             session = LanguageModelSession()
         }
     }
@@ -41,7 +42,7 @@ class FMF {
         // Note: transcript includes instructions.
         return LanguageModelSession(transcript: condensedTranscript)
     }
-    
+
     // MARK: Basic Usage
 
     func basicUsage(prompt: String) async throws -> String {
@@ -78,25 +79,28 @@ class FMF {
         )
         return response.content
     }
-    
+
     // MARK: Language Check
 
     func checkLanguageSupport() -> Bool {
         let supportedLanguages = SystemLanguageModel.default.supportedLanguages
         guard supportedLanguages.contains(Locale.current.language) else {
-          // Show message
-          return false
+            // Show message
+            return false
         }
-        
+
         return true
     }
-    
+
     // MARK: NPC
-    
+
     func responseNPC(prompt: String) async throws -> NPC {
         // Initialize the session with instructions
-        let response = try await session.respond(to: prompt, generating: NPC.self)
+        let response = try await session.respond(
+            to: prompt,
+            generating: NPC.self
+        )
         return response.content
     }
-        
+
 }

@@ -59,7 +59,7 @@ extension String {
                 options: .init(
                     allowsExtendedAttributes: true,
                     interpretedSyntax: .inlineOnlyPreservingWhitespace,
-                    )
+                )
             )
             return attributedString
         } catch {
